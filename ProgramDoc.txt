@@ -1,0 +1,7 @@
+IMPLEMENTATION
+This simple console application will implement a simple packing database simulator (adapted from CSCD 211 - Lab 8) that will do the following:
+   - A simple menu as a UI for the user input
+   - A simulation of the database of the packages, represented by the ArrayList<Packages> (or the equivalent)
+   - Available operations: appending, deleting (one, multiple, or all), clear, modifying existing package status
+   - Reading input files for importing packages ("importPackages.txt")
+   - Simulate a delivery session by outputting ("delivery.txt") and editing the databases concurrently 
