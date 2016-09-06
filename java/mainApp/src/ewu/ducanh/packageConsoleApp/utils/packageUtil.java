@@ -3,7 +3,7 @@ package ewu.ducanh.packageConsoleApp.utils;
 public class packageUtil {
     public static boolean isValidWeight(final Double inputW) {
         try {
-            return inputW > 0;
+            return inputW >= 0;
         } catch (Exception e) {
             return false;
         }
@@ -11,7 +11,7 @@ public class packageUtil {
 
     public static boolean isValidLength(final Double inputL) {
         try {
-            return inputL > 0;
+            return inputL >= 0;
         } catch (Exception e) {
             return false;
         }

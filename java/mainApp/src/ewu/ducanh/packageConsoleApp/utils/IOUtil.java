@@ -29,6 +29,7 @@ public class IOUtil {
                 inputFile = tmpFile.isAbsolute() ? (tmpFile) : tmpFile.getAbsoluteFile();
                 validFile = true;
             }
+            System.out.println();
         } while ( !validFile );
 
         return inputFile;

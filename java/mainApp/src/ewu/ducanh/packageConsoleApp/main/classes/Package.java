@@ -2,22 +2,9 @@ package ewu.ducanh.packageConsoleApp.main.classes;
 
 public abstract class Package implements Comparable<Package>{
     protected String trackingNumber;
-    protected Double weight;
-    protected Double length, width;
-
-    public void setLength(Double length) {
-        if (length <= 0) {
-            throw new IllegalArgumentException("Length must be positive");
-        }
-        this.length = length;
-    }
-
-    public void setWidth(Double width) {
-        if (width < 0) {
-            throw new IllegalArgumentException("Width must be positive");
-        }
-        this.width = width;
-    }
+    protected double weight;
+    protected double length, width;
+    protected boolean overweight, oversize;
 
     public Double getLength() {
         return length;
@@ -51,6 +38,20 @@ public abstract class Package implements Comparable<Package>{
         }
     }
 
+    public void setLength(Double length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be positive");
+        }
+        this.length = length;
+    }
+
+    public void setWidth(Double width) {
+        if (width < 0) {
+            throw new IllegalArgumentException("Width must be positive");
+        }
+        this.width = width;
+    }
+
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder("");
@@ -59,27 +60,52 @@ public abstract class Package implements Comparable<Package>{
         str.append("Tracking number: " + this.trackingNumber + "\n");
         str.append("Weight: " + this.weight + "\n");
         str.append("Length: " + this.length + " | Width: " + this.width);
+        str.append("Status: ");
+        if ( !this.overweight && !this.oversize ) { str.append("Can be loaded"); }
+        else if (this.overweight && this.oversize) { str.append("Overweight & Oversize - Cannot be loaded"); }
+        else if (this.overweight) { str.append("Overweight - Cannot be loaded"); }
+        else { str.append("Oversize - Cannot be loaded"); }
 
         return str.toString();
     }
 
     @Override
-    public boolean equals( final Object that ) {
-        if ( this == that ) return true;
-        if ( that == null ) return false;
-        if (!(that instanceof Package)) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Package obj = (Package) that;
-        boolean b1 = this.getClass().getSimpleName().equals(obj.getClass().getSimpleName());
-        boolean b2 = this.weight.equals(obj.weight);
-        return b1 && b2;
+        Package aPackage = (Package) o;
+
+        if (Double.compare(aPackage.weight, weight) != 0) return false;
+        if (Double.compare(aPackage.length, length) != 0) return false;
+        if (Double.compare(aPackage.width, width) != 0) return false;
+        if (overweight != aPackage.overweight) return false;
+        if (oversize != aPackage.oversize) return false;
+        return trackingNumber.equals(aPackage.trackingNumber);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = trackingNumber.hashCode();
+        temp = Double.doubleToLongBits(weight);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(length);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(width);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (overweight ? 1 : 0);
+        result = 31 * result + (oversize ? 1 : 0);
+        return result;
     }
 
     @Override
     public int compareTo( final Package that ) {
         int c1 = (this.getClass().getSimpleName()).compareTo(that.getClass().getSimpleName());
         if ( c1 == 0 ) {
-            return this.weight.compareTo(that.weight);
+            return (new Double(this.weight)).compareTo(that.weight);
         }
         return c1;
     }
